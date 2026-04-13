@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Simple Shell
 A lightweight Unix command interpreter written in C, developed as a collaborative project by Ian Aviles and Alberto Frias.
 
