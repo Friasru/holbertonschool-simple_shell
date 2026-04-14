@@ -14,7 +14,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 	int count;
 
 	count = 0;
-	while (1);
+	while (1)
 	{
 		if (isatty(STDIN_FILENO))
 		prompt();
