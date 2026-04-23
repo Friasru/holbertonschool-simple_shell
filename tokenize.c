@@ -4,16 +4,17 @@
 #define TOK_DELIM " \t\r\n\a"
 
 /**
- * split_line - splits a line into tokens
- * @line: the line to split
+ * split_line - Splits a line into tokens
+ * @line: The line to split
  *
- * Return: NULL-terminated array of tokens
+ * Return: Null-terminated array of tokens, or NULL on failure
  */
 char **split_line(char *line)
 {
 	int bufsize;
 	int i;
 	char **tokens;
+	char **tmp;
 	char *token;
 
 	bufsize = TOK_BUFSIZE;
@@ -21,7 +22,7 @@ char **split_line(char *line)
 	token = NULL;
 
 	tokens = malloc(bufsize * sizeof(char *));
-	if (token == NULL)
+	if (tokens == NULL)
 		return (NULL);
 
 	token = strtok(line, TOK_DELIM);
@@ -33,12 +34,17 @@ char **split_line(char *line)
 		if (i >= bufsize)
 		{
 			bufsize += TOK_BUFSIZE;
-			tokens = realloc(tokens, bufsize * sizeof(char *));
-			if (tokens == NULL)
-			return (NULL);
+			tmp = realloc(tokens, bufsize * sizeof(char *));
+			if (tmp == NULL)
+			{
+				free(tokens);
+				return (NULL);
+			}
+			tokens = tmp;
 		}
 		token = strtok(NULL, TOK_DELIM);
 	}
+
 	tokens[i] = NULL;
 	return (tokens);
 }
