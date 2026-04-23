@@ -19,5 +19,6 @@ int execute(char **args, char *argv0, int count);
 char *find_path(char *cmd);
 void free_args(char **args);
 void print_error(char *argv0, int count, char *cmd);
+char *trim(char *str);
 
 #endif /* SHELL_H */
