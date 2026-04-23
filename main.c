@@ -11,7 +11,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 {
 	char *line;
 	char *trimmed;
-	char *args[2];
+	char **args;
 	pid_t pid;
 	int status;
 
@@ -36,16 +36,22 @@ int main(int argc __attribute__((unused)), char *argv[])
 			continue;
 		}
 
-		args[0] = trimmed;
-		args[1] = NULL;
+		args = split_line(trimmed);
+		if (args == NULL || args[0] == NULL)
+		{
+			free(line);
+			free(args);
+			continue;
+		}
 
 		pid = fork();
 		if (pid == 0)
 		{
-			if (execve(trimmed, args, environ) == -1)
+			if (execve(args[0], args, environ) == -1)
 			{
 				fprintf(stderr, "%s: No such file or directory\n", argv[0]);
 				free(line);
+				free(args);
 				exit(1);
 			}
 		}
@@ -55,6 +61,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 		}
 
 		free(line);
+		free(args);
 	}
 
 	return (0);
