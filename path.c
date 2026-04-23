@@ -1,6 +1,27 @@
 #include "shell.h"
 
 /**
+ * get_env_value - Gets the value of an environment variable
+ * @name: The name of the variable to find
+ *
+ * Return: The value string or NULL if not found
+ */
+char *get_env_value(const char *name)
+{
+	int i;
+	int len;
+
+	len = strlen(name);
+	for (i = 0; environ[i]; i++)
+	{
+		if (strncmp(environ[i], name, len) == 0 &&
+			environ[i][len] == '=')
+			return (environ[i] + len + 1);
+	}
+	return (NULL);
+}
+
+/**
  * find_path - Finds the full path of a command
  * @cmd: The command to find
  *
@@ -18,7 +39,7 @@ char *find_path(char *cmd)
 	if (stat(cmd, &st) == 0)
 		return (cmd);
 
-	path_env = getenv("PATH");
+	path_env = get_env_value("PATH");
 	if (path_env == NULL || *path_env == '\0')
 		return (NULL);
 
