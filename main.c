@@ -39,8 +39,8 @@ int main(int argc __attribute__((unused)), char *argv[])
 		args = split_line(trimmed);
 		if (args == NULL || args[0] == NULL)
 		{
-			free(line);
 			free(args);
+			free(line);
 			continue;
 		}
 
@@ -49,9 +49,10 @@ int main(int argc __attribute__((unused)), char *argv[])
 		{
 			if (execve(args[0], args, environ) == -1)
 			{
-				fprintf(stderr, "%s: No such file or directory\n", argv[0]);
-				free(line);
+				fprintf(stderr, "%s: No such file or directory\n",
+					argv[0]);
 				free(args);
+				free(line);
 				exit(1);
 			}
 		}
@@ -60,8 +61,8 @@ int main(int argc __attribute__((unused)), char *argv[])
 			waitpid(pid, &status, 0);
 		}
 
-		free(line);
 		free(args);
+		free(line);
 	}
 
 	return (0);
