@@ -18,6 +18,7 @@ char **split_line(char *line)
 
 	bufsize = TOK_BUFSIZE;
 	i = 0;
+	token = NULL;
 
 	tokens = malloc(bufsize * sizeof(char *));
 	if (token == NULL)
