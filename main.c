@@ -54,7 +54,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 				argv[0], count, args[0]);
 			free(args);
 			free(line);
-			continue;
+			exit(127);
 		}
 
 		pid = fork();
@@ -68,12 +68,14 @@ int main(int argc __attribute__((unused)), char *argv[])
 					free(path);
 				free(args);
 				free(line);
-				exit(1);
+				exit(127);
 			}
 		}
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
+			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+				exit(WEXITSTATUS(status));
 		}
 
 		if (path != args[0])
