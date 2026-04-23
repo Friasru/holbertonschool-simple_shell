@@ -42,3 +42,28 @@ void free_args(char **args)
 	if (args)
 	free(args);
 }
+
+/**
+ * trim - Removes leading and trailing whitespace from a string
+ * @str: The string to trim
+ *
+ * Return: Pointer to the trimmed string
+ */
+char *trim(char *str)
+{
+	char *end;
+
+	while (*str == ' ' || *str == '\t')
+		str++;
+
+	if (*str == '\0')
+		return (str);
+
+	end = str + strlen(str) - 1;
+	while (end > str && (*end == ' ' || *end == '\t' || *end == '\n'))
+		end--;
+
+	*(end + 1) = '\0';
+
+	return (str);
+}
