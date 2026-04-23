@@ -20,5 +20,6 @@ char *find_path(char *cmd);
 void free_args(char **args);
 void print_error(char *argv0, int count, char *cmd);
 char *trim(char *str);
+char get_env_value(const charname);
 
 #endif /* SHELL_H */
