@@ -12,9 +12,12 @@ int main(int argc __attribute__((unused)), char *argv[])
 	char *line;
 	char *trimmed;
 	char **args;
+	char *path;
 	pid_t pid;
 	int status;
+	int count;
 
+	count = 0;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -29,13 +32,13 @@ int main(int argc __attribute__((unused)), char *argv[])
 		}
 
 		trimmed = trim(line);
-
 		if (trimmed[0] == '\0')
 		{
 			free(line);
 			continue;
 		}
 
+		count++;
 		args = split_line(trimmed);
 		if (args == NULL || args[0] == NULL)
 		{
@@ -44,13 +47,25 @@ int main(int argc __attribute__((unused)), char *argv[])
 			continue;
 		}
 
+		path = find_path(args[0]);
+		if (path == NULL)
+		{
+			fprintf(stderr, "%s: %d: %s: not found\n",
+				argv[0], count, args[0]);
+			free(args);
+			free(line);
+			continue;
+		}
+
 		pid = fork();
 		if (pid == 0)
 		{
-			if (execve(args[0], args, environ) == -1)
+			if (execve(path, args, environ) == -1)
 			{
-				fprintf(stderr, "%s: No such file or directory\n",
-					argv[0]);
+				fprintf(stderr, "%s: %d: %s: not found\n",
+					argv[0], count, args[0]);
+				if (path != args[0])
+					free(path);
 				free(args);
 				free(line);
 				exit(1);
@@ -61,7 +76,9 @@ int main(int argc __attribute__((unused)), char *argv[])
 			waitpid(pid, &status, 0);
 		}
 
-		free(args);
+		if (path != args[0])
+			free(path);
+			free(args);
 		free(line);
 	}
 
