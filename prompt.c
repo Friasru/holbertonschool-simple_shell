@@ -19,7 +19,7 @@ char *read_line(void)
 	size_t len;
 	ssize_t read;
 
-	line == NULL;
+	line = NULL;
 	len = 0;
 	read = getline(&line, &len, stdin);
 
