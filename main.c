@@ -78,7 +78,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 
 		if (path != args[0])
 			free(path);
-			free(args);
+		free(args);
 		free(line);
 	}
 
