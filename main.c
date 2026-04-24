@@ -56,6 +56,14 @@ int main(int argc __attribute__((unused)), char *argv[])
 			exit(last_status);
 		}
 
+		if (strcmp(args[0], "env") == 0)
+		{
+			handle_env();
+			free(args);
+			free(line);
+			continue;
+		}
+
 		path = find_path(args[0]);
 		if (path == NULL)
 		{
@@ -96,4 +104,3 @@ int main(int argc __attribute__((unused)), char *argv[])
 
 	return (last_status);
 }
-
