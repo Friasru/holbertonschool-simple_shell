@@ -16,8 +16,10 @@ int main(int argc __attribute__((unused)), char *argv[])
 	pid_t pid;
 	int status;
 	int count;
+	int last_status;
 
 	count = 0;
+	last_status = 0;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -47,7 +49,12 @@ int main(int argc __attribute__((unused)), char *argv[])
 			continue;
 		}
 
-		handle_exit(args, line, NULL);
+		if (strcmp(args[0], "exit") == 0)
+		{
+			free(args);
+			free(line);
+			exit(last_status);
+		}
 
 		path = find_path(args[0]);
 		if (path == NULL)
@@ -56,6 +63,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 				argv[0], count, args[0]);
 			free(args);
 			free(line);
+			last_status = 127;
 			continue;
 		}
 
@@ -76,6 +84,8 @@ int main(int argc __attribute__((unused)), char *argv[])
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				last_status = WEXITSTATUS(status);
 		}
 
 		if (path != args[0])
@@ -84,5 +94,6 @@ int main(int argc __attribute__((unused)), char *argv[])
 		free(line);
 	}
 
-	return (0);
+	return (last_status);
 }
+
