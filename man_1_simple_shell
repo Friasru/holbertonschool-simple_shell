@@ -1,0 +1,108 @@
+.TH HSH 1 "April 2026" "1.0" "Simple Shell Man Page"
+
+.SH NAME
+hsh \- a simple UNIX command line interpreter
+
+.SH SYNOPSIS
+.B hsh
+.RI [ command ]
+.RI [ arguments ]
+
+.SH DESCRIPTION
+.B hsh
+is a simple UNIX command line interpreter that reads and executes commands
+from standard input. It replicates basic functionality of
+.B /bin/sh
+and supports both interactive and non-interactive modes.
+
+.SH USAGE
+.SS Interactive Mode
+In interactive mode, the shell displays a prompt and waits for the user
+to type a command:
+
+.nf
+$ ./hsh
+($) /bin/ls
+($) exit
+.fi
+
+.SS Non-Interactive Mode
+In non-interactive mode, commands are passed via pipe or file:
+
+.nf
+$ echo "/bin/ls" | ./hsh
+$ cat commands_file | ./hsh
+.fi
+
+.SH BUILTINS
+The following built-in commands are supported:
+
+.TP
+.B exit
+Exit the shell. The exit status is that of the last command executed.
+
+.TP
+.B env
+Print the current environment variables, one per line.
+
+.SH PATH
+.B hsh
+uses the
+.B PATH
+environment variable to search for commands. Each directory in PATH
+is searched in order until the command is found. If the command contains
+a
+.B /
+it is executed directly without searching PATH.
+
+.SH EXIT STATUS
+.TP
+.B 0
+Successful execution.
+.TP
+.B 127
+Command not found.
+.TP
+.B other
+The exit status of the last command executed.
+
+.SH EXAMPLES
+Execute a command with arguments:
+.nf
+($) /bin/ls -l /tmp
+.fi
+
+Search for a command using PATH:
+.nf
+($) ls
+.fi
+
+Print environment variables:
+.nf
+($) env
+.fi
+
+Exit the shell:
+.nf
+($) exit
+.fi
+
+.SH ERRORS
+If a command is not found, an error message is printed to stderr:
+
+.nf
+./hsh: 1: command: not found
+.fi
+
+The format is:
+.B argv[0]: command_number: command: not found
+
+.SH AUTHORS
+Written by students of Holberton School.
+
+.SH SEE ALSO
+.BR sh (1),
+.BR bash (1),
+.BR execve (2),
+.BR fork (2),
+.BR waitpid (2)
