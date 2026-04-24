@@ -37,7 +37,7 @@ char *find_path(char *cmd)
 	int len;
 
 	if (strchr(cmd, '/') != NULL && stat(cmd, &st) == 0)
-	return (cmd);
+		return (cmd);
 
 	path_env = get_env_value("PATH");
 	if (path_env == NULL || *path_env == '\0')

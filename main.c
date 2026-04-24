@@ -47,6 +47,8 @@ int main(int argc __attribute__((unused)), char *argv[])
 			continue;
 		}
 
+		handle_exit(args, line, NULL);
+
 		path = find_path(args[0]);
 		if (path == NULL)
 		{
@@ -54,7 +56,7 @@ int main(int argc __attribute__((unused)), char *argv[])
 				argv[0], count, args[0]);
 			free(args);
 			free(line);
-			exit(127);
+			continue;
 		}
 
 		pid = fork();
@@ -74,8 +76,6 @@ int main(int argc __attribute__((unused)), char *argv[])
 		else if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
-			if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-				exit(WEXITSTATUS(status));
 		}
 
 		if (path != args[0])
