@@ -22,5 +22,6 @@ void print_error(char *argv0, int count, char *cmd);
 char *trim(char *str);
 char *get_env_value(const char *name);
 int handle_exit(char **args, char *line, char *path);
+void handle_env(void);
 
 #endif /* SHELL_H */

@@ -20,3 +20,17 @@ int handle_exit(char **args, char *line, char *path)
 	}
 	return (1);
 }
+
+/**
+ * handle_env - prints the current enviroment
+ */
+void handle_env(void)
+{
+	int i;
+
+	for (i = 0; environ[i]; i++)
+	{
+		write(STDOUT_FILENO, environ[i], strlen(environ[i]));
+		write(STDOUT_FILENO, "\n", 1);
+	}
+}
